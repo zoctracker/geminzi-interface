@@ -1,3 +1,4 @@
+// Trinity Activation - V1.1
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { Dashboard } from './components/Dashboard';
 
