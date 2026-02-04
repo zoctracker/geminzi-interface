@@ -5,6 +5,7 @@ import { CONTRACT_ADDRESSES, CONTRACT_ABI } from '../constants'; // <--- Import 
 import { formatEther } from 'viem';
 import { Transfer } from './Transfer';
 import { Vault } from './Vault';
+import { SoulCard } from './SoulCard'; // <--- AJOUT
 
 export function Dashboard() {
   const { address, isConnected } = useAccount();
@@ -47,6 +48,9 @@ export function Dashboard() {
                 Réseau: {chainId === 84532 ? '🔵 BASE' : '⚫ SEPOLIA'}
             </span>
         </div>
+
+        {/* L'ÂME DE LA TRINITÉ */}
+        {chainId === 11155111 && <SoulCard />}  {/* <--- AJOUT (Visible seulement sur Sepolia pour l'instant) */}
 
         {/* STATUT */}
         <div>
