@@ -18,7 +18,7 @@ export default function Home() {
 
       <div className="relative flex flex-col place-items-center mt-20 gap-8 w-full">
         <h1 className="text-6xl font-extrabold tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-indigo-500">
-          BE EVERYWHERE.
+          TRINITY ONLINE..
         </h1>
         
         {/* LE TABLEAU DE BORD S'AFFICHERA ICI SI CONNECTÉ */}
