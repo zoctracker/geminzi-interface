@@ -50,7 +50,8 @@ export function Dashboard() {
         </div>
 
         {/* L'ÂME DE LA TRINITÉ */}
-        {chainId === 11155111 && <SoulCard />}  {/* <--- AJOUT (Visible seulement sur Sepolia pour l'instant) */}
+        <div className="text-red-500 text-xs text-center">DEBUG MODE ACTIF</div>
+        <SoulCard />
 
         {/* STATUT */}
         <div>
