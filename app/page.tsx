@@ -4,7 +4,7 @@ import { Dashboard } from './components/Dashboard';
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-black text-white p-24">
+    <main className="flex min-h-screen flex-col items-center justify-start pt-12 px-2 md:px-24 bg-black text-white selection:bg-purple-500/30">
       <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
         
         <div className="fixed left-0 top-0 flex w-full justify-center border-b border-white/10 bg-zinc-900/50 pb-6 pt-8 backdrop-blur-2xl lg:static lg:w-auto lg:rounded-xl lg:border lg:p-4">

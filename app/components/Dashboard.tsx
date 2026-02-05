@@ -34,7 +34,7 @@ export function Dashboard() {
 
   return (
     <div className="w-full max-w-2xl mt-8 md:mt-12 p-1 rounded-2xl bg-gradient-to-r from-purple-500/20 to-indigo-500/20 backdrop-blur-xl border border-white/10 mx-auto">
-      <div className="bg-black/80 rounded-xl p-4 md:p-8 text-center space-y-6 md:space-y-8">
+      <div className="bg-black/80 rounded-xl p-2 md:p-8 text-center space-y-6 md:space-y-8">
         
         {/* SÉLECTEUR RÉSEAU (Optimisé Mobile) */}
         <div className="inline-flex items-center gap-2 bg-zinc-900/80 px-4 py-2 rounded-full border border-white/5 mb-4">
