@@ -31,7 +31,7 @@ export function SoulCard() {
       {/* Effet de Halo Doré pour la Trinité */}
       <div className="absolute -inset-0.5 bg-gradient-to-r from-yellow-600 via-purple-600 to-blue-600 rounded-2xl opacity-50 blur group-hover:opacity-100 transition duration-1000"></div>
       
-      <div className="relative bg-black rounded-2xl p-4 md:p-6 border border-white/10 flex items-center justify-between overflow-hidden">
+      <div className="relative bg-black rounded-2xl p-3 md:p-6 border border-white/10 flex items-center justify-between overflow-hidden">
         
         {/* Arrière-plan subtil */}
         <div className="absolute top-0 right-0 p-4 opacity-10 text-9xl font-serif text-white select-none">
