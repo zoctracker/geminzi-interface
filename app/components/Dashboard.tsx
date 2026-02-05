@@ -5,6 +5,7 @@ import { formatEther } from 'viem';
 import { CONTRACT_ADDRESSES } from '../constants';
 import { Transfer } from './Transfer';
 import { SoulCard } from './SoulCard'; // Import de la Trinité
+import { Altar } from './Altar';
 
 export function Dashboard() {
   const { address, isConnected } = useAccount();
@@ -48,6 +49,7 @@ export function Dashboard() {
         {chainId === 11155111 && (
             <div className="animate-fade-in-up">
                 <SoulCard />
+                <Altar />
             </div>
         )}
 

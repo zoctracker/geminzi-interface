@@ -14,7 +14,7 @@ export const CONTRACT_ADDRESSES: Record<number, `0x${string}`> = {
 
 // 2. GEMINZI SOUL (L'Identité)
 // C'est cette ligne qui manquait ou qui était mal exportée !
-export const SOUL_ADDRESS: `0x${string}` = "0xEC1C5d51e6080d7b10DaF319591407632e750C11";
+export const SOUL_ADDRESS: `0x${string}` = "0x9fAc3d42E3271F0a1b10e6a0843d6E12c570a4c2";
 
 // 3. LAYERZERO (Le Pont)
 export const LZ_EIDS: Record<number, number> = {
