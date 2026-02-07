@@ -28,82 +28,72 @@ export function Railgun() {
   return (
     <div className="w-full mt-12 mb-8 font-mono group">
       
-      {/* STRUCTURE DU CANON */}
-      <div className="relative bg-zinc-900 border-x-4 border-zinc-700 p-1">
+      {/* Structure Verte Tactique */}
+      <div className="relative bg-zinc-900 border-x-4 border-emerald-900 p-1">
         
-        {/* Lignes de visée décoratives */}
-        <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-red-500/50"></div>
-        <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-red-500/50"></div>
-        <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-red-500/50"></div>
-        <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-red-500/50"></div>
+        {/* Viseurs Verts */}
+        <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-emerald-500"></div>
+        <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-emerald-500"></div>
+        <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-emerald-500"></div>
+        <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-emerald-500"></div>
 
-        <div className="bg-black border border-zinc-800 p-6 relative overflow-hidden">
+        <div className="bg-black border border-emerald-900/50 p-6 relative overflow-hidden">
             
             {/* HEADER */}
-            <div className="flex justify-between items-center mb-6 border-b border-zinc-800 pb-2">
-                <h3 className="text-zinc-400 font-bold uppercase tracking-widest flex items-center gap-2 text-xs">
-                    <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
-                    ASSET RAILGUN // MK-II
+            <div className="flex justify-between items-center mb-6 border-b border-emerald-900/30 pb-2">
+                <h3 className="text-emerald-500 font-bold uppercase tracking-widest flex items-center gap-2 text-xs">
+                    <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_5px_lime]"></span>
+                    TARGETING SYSTEM
                 </h3>
-                <span className="text-[10px] text-zinc-600">READY TO FIRE</span>
+                <span className="text-[10px] text-emerald-700">ONLINE</span>
             </div>
 
-            {/* SYSTÈME DE VISÉE (INPUT ADRESSE) */}
+            {/* INPUT CIBLE */}
             <div className="mb-4">
-                <label className="text-[9px] text-red-500/80 uppercase tracking-widest mb-1 block">
-                    [1] TARGET COORDINATES (ADDRESS)
+                <label className="text-[9px] text-emerald-600 uppercase tracking-widest mb-1 block">
+                    Target Address
                 </label>
                 <div className="relative group/input">
-                    <div className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-600 text-lg">⊕</div>
+                    <div className="absolute left-3 top-1/2 -translate-y-1/2 text-emerald-600 text-lg">⊕</div>
                     <input 
                         type="text" 
                         value={recipient}
                         onChange={(e) => setRecipient(e.target.value)}
                         placeholder="0x..." 
-                        className="w-full bg-zinc-900/50 border border-zinc-700 text-zinc-300 pl-10 pr-4 py-3 focus:outline-none focus:border-red-500/50 focus:bg-zinc-900 transition-all font-mono text-xs placeholder-zinc-700"
+                        className="w-full bg-emerald-950/10 border border-emerald-900 text-emerald-100 pl-10 pr-4 py-3 focus:outline-none focus:border-emerald-500 focus:bg-emerald-950/30 transition-all font-mono text-xs placeholder-emerald-900"
                     />
-                    {/* Crosshair effect on focus */}
-                    <div className="absolute inset-0 border border-red-500/0 group-focus-within/input:border-red-500/20 pointer-events-none transition-all"></div>
                 </div>
             </div>
 
-            {/* CHARGEMENT MUNITION (INPUT MONTANT) */}
+            {/* INPUT MONTANT */}
             <div className="mb-6">
-                <label className="text-[9px] text-red-500/80 uppercase tracking-widest mb-1 block">
-                    [2] PAYLOAD (AMOUNT)
+                <label className="text-[9px] text-emerald-600 uppercase tracking-widest mb-1 block">
+                    Asset Amount
                 </label>
-                <div className="flex items-center bg-zinc-900/50 border border-zinc-700 px-4 py-2 focus-within:border-red-500/50 transition-colors">
+                <div className="flex items-center bg-emerald-950/10 border border-emerald-900 px-4 py-2 focus-within:border-emerald-500 transition-colors">
                     <input 
                         type="number" 
                         value={amount}
                         onChange={(e) => setAmount(e.target.value)}
                         placeholder="0.0" 
-                        className="bg-transparent text-2xl font-black text-white w-full focus:outline-none placeholder-zinc-800"
+                        className="bg-transparent text-2xl font-black text-white w-full focus:outline-none placeholder-emerald-900"
                     />
-                    <span className="text-zinc-500 font-bold text-xs border-l border-zinc-700 pl-4 ml-2">
-                        GMNZ
-                    </span>
+                    <span className="text-emerald-600 font-bold text-xs border-l border-emerald-900 pl-4 ml-2">GMNZ</span>
                 </div>
             </div>
 
-            {/* DÉCLENCHEUR (BOUTON) */}
+            {/* BOUTON DE TIR VERT */}
             <button 
                 onClick={handleFire}
                 disabled={isPending || isConfirming || !recipient || !amount}
-                className="w-full relative overflow-hidden bg-zinc-800 hover:bg-zinc-700 disabled:opacity-50 text-white py-4 border-t-2 border-red-600/50 hover:border-red-500 transition-all active:scale-[0.99]"
+                className="w-full bg-emerald-900/50 hover:bg-emerald-800 text-emerald-400 hover:text-white py-4 border border-emerald-500/50 hover:border-emerald-400 transition-all active:scale-[0.99] font-bold tracking-[0.2em] text-xs uppercase shadow-[0_0_15px_rgba(16,185,129,0.1)]"
             >
-                {/* Scanline effect */}
-                <div className="absolute top-0 left-0 w-full h-[1px] bg-white/10 animate-[scan_2s_linear_infinite]"></div>
-                
-                <span className="relative z-10 flex items-center justify-center gap-3 font-bold tracking-[0.2em] text-xs uppercase">
-                    {isPending ? 'CHARGING COILS...' : isConfirming ? 'PROJECTILE IN FLIGHT...' : '>>> ENGAGE TARGET <<<'}
-                </span>
+                {isPending ? 'CALIBRATING...' : '>>> EXECUTE TRANSFER <<<'}
             </button>
 
-            {/* FEEDBACK */}
             {isSuccess && (
-                <div className="mt-4 p-2 bg-green-900/20 border-l-2 border-green-500 text-[10px] text-green-500 font-mono">
-                    IMPACT CONFIRMED. ASSETS TRANSFERRED.
+                <div className="mt-4 p-2 bg-emerald-900/20 border-l-2 border-emerald-500 text-[10px] text-emerald-400 font-mono">
+                    TARGET HIT. ASSETS TRANSFERRED.
                 </div>
             )}
         </div>
