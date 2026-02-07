@@ -16,6 +16,7 @@ export function SoulCard() {
 
   // Extraction des données (ou valeurs par défaut si chargement)
   // Format retourné par le contrat: [vitality, scars, tokenId]
+  // Note: Wagmi renvoie parfois des BigInt, on convertit en Number pour l'affichage
   const vitality = soulData ? Number(soulData[0]) : 0;
   const scars = soulData ? Number(soulData[1]) : 0;
   const tokenId = soulData ? Number(soulData[2]) : 0;
@@ -38,6 +39,7 @@ export function SoulCard() {
       <div className="relative bg-black/80 backdrop-blur-xl border border-white/10 rounded-2xl p-6 overflow-hidden">
         
         {/* 3. LE SCANNER (Ligne qui descend) */}
+        {/* Animation CSS infinie simulée via group-hover ou keyframes custom si besoin. Ici on fait un effet de passage. */}
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-purple-500/10 to-transparent translate-y-[-100%] group-hover:translate-y-[100%] transition-transform duration-[2000ms] ease-in-out pointer-events-none"></div>
 
         {/* HEADER: ID & Puce */}
@@ -51,7 +53,7 @@ export function SoulCard() {
                 </h2>
             </div>
             
-            {/* PUCE HOLOGRAPHIQUE (Animation tournante) */}
+            {/* PUCE HOLOGRAPHIQUE (Animation tournante - Octonion Shield) */}
             <div className="w-10 h-10 rounded-lg border border-purple-500/30 bg-purple-900/10 flex items-center justify-center relative overflow-hidden">
                 <div className="absolute inset-0 bg-[conic-gradient(from_90deg_at_50%_50%,#00000000_50%,#a855f7_100%)] animate-spin opacity-50"></div>
                 <div className="z-10 text-lg">💠</div>
