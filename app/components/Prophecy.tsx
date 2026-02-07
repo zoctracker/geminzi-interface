@@ -4,6 +4,9 @@ import { useState, useEffect } from 'react';
 
 export function Prophecy() {
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+  
+  // SÉCURITÉ ABSOLUE : On met le symbole dans une variable
+  const ARROW = ">"; 
 
   useEffect(() => {
     const targetDate = new Date('2029-01-01T00:00:00').getTime();
@@ -48,12 +51,13 @@ export function Prophecy() {
             <div className="text-4xl md:text-5xl font-black text-green-500/90 tracking-tighter tabular-nums">
                 {timeLeft.days}D <span className="text-lg text-green-800">:{timeLeft.hours}:{timeLeft.minutes}:{timeLeft.seconds}</span>
             </div>
-            {/* C'EST ICI QUE JE SÉCURISE LES CARACTÈRES AVEC {'>'} */}
-            <p className="text-[10px] text-green-700 leading-relaxed">
-                {'>'} TARGET: 2029 (IBM/GOOGLE QUANTUM SUPREMACY)<br/>
-                {'>'} STATUS: ELLIPTIC CURVE VULNERABLE<br/>
-                {'>'} PROTOCOL: <span className="text-green-400 font-bold underline">MIGRATE TO SOULBOUND</span>
-            </p>
+            
+            {/* ICI : On utilise la variable {ARROW} au lieu du symbole direct */}
+            <div className="text-[10px] text-green-700 leading-relaxed space-y-1">
+                <div>{ARROW} TARGET: 2029 (IBM/GOOGLE QUANTUM SUPREMACY)</div>
+                <div>{ARROW} STATUS: ELLIPTIC CURVE VULNERABLE</div>
+                <div>{ARROW} PROTOCOL: <span className="text-green-400 font-bold underline">MIGRATE TO SOULBOUND</span></div>
+            </div>
         </div>
 
         {/* PANEL 2: SIGNAL RECTIFIER */}
