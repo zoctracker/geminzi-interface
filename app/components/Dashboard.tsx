@@ -10,6 +10,7 @@ import { Prophecy } from './Prophecy';
 import { CryoVault } from './CryoVault';
 import { Railgun } from './Railgun';
 import { MoralAI } from './MoralAI';
+import { AccessControl } from './AccessControl';
 
 export function Dashboard() {
   const { address, isConnected } = useAccount();
@@ -94,6 +95,9 @@ export function Dashboard() {
 
         {/* COMPOSANT DE TRANSFERT */}
         <Railgun />
+
+        {/* PROTOCOLE D'EXPANSION (Prestige) */}
+        <AccessControl />
 
       </div>
     </div>
