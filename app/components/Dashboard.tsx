@@ -3,14 +3,13 @@
 import { useAccount, useBalance, useChainId } from 'wagmi';
 import { formatEther } from 'viem';
 import { CONTRACT_ADDRESSES } from '../constants';
-import { Transfer } from './Transfer';
-import { SoulCard } from './SoulCard'; // Import de la Trinité
-import { Altar } from './Altar';
+import { SoulCard } from './SoulCard';
 import { Prophecy } from './Prophecy';
-import { CryoVault } from './CryoVault';
-import { Railgun } from './Railgun';
 import { MoralAI } from './MoralAI';
-import { AccessControl } from './AccessControl';
+import { Altar } from './Altar';       // La Forge
+import { CryoVault } from './CryoVault'; // Le Vesting
+import { Railgun } from './Railgun';     // Le Transfert
+import { AccessControl } from './AccessControl'; // La Colonie
 
 export function Dashboard() {
   const { address, isConnected } = useAccount();
@@ -27,77 +26,79 @@ export function Dashboard() {
 
   if (!isConnected) {
     return (
-      <div className="text-center text-zinc-500 animate-pulse mt-10 px-4">
-        Connecte ton Wallet pour entrer dans la Matrice...
+      <div className="text-center text-zinc-500 animate-pulse mt-10 px-4 font-mono text-sm">
+        > WAITING FOR NEURAL LINK... (Connect Wallet)
       </div>
     );
   }
 
-  // Calcul du Vesting (Simulé pour l'instant)
+  // SÉCURITÉ RÉSEAU : Si on n'est pas sur Sepolia (11155111), on bloque tout.
+  if (chainId !== 11155111) {
+      return (
+          <div className="w-full max-w-2xl mx-auto mt-12 p-6 bg-red-950/30 border border-red-500 rounded-xl text-center font-mono">
+              <h3 className="text-red-500 font-bold text-xl mb-2">⚠️ NETWORK MISMATCH</h3>
+              <p className="text-red-400 text-xs mb-4">
+                  You are currently on Chain ID: {chainId}.<br/>
+                  Target Protocol requires: SEPOLIA (11155111).
+              </p>
+              <div className="inline-block bg-red-900/50 px-4 py-2 rounded text-xs text-white">
+                  PLEASE SWITCH NETWORK IN WALLET
+              </div>
+          </div>
+      );
+  }
+
+  // Calcul du Vesting
   const rawBalance = tokenBalance ? Number(formatEther(tokenBalance.value)) : 0;
   const vestingAmount = 20202020;
-  const freeBalance = Math.round(rawBalance - vestingAmount);
+  const freeBalance = Math.round(rawBalance - vestingAmount); // Ajuster selon ta logique réelle
 
   return (
     <div className="w-full max-w-2xl mt-8 md:mt-12 p-1 rounded-2xl bg-gradient-to-r from-purple-500/20 to-indigo-500/20 backdrop-blur-xl border border-white/10 mx-auto">
-      <div className="bg-black/80 rounded-xl p-2 md:p-8 text-center space-y-6 md:space-y-8">
+      <div className="bg-black/80 rounded-xl p-2 md:p-8 text-center space-y-2">
         
-        {/* SÉLECTEUR RÉSEAU (Optimisé Mobile) */}
+        {/* HEADER RÉSEAU */}
         <div className="inline-flex items-center gap-2 bg-zinc-900/80 px-4 py-2 rounded-full border border-white/5 mb-4">
-            <div className={`w-2 h-2 rounded-full ${chainId === 84532 ? 'bg-blue-500' : 'bg-gray-500'}`}></div>
+            <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
             <span className="text-xs font-mono text-zinc-400 uppercase tracking-widest">
-                Réseau: <span className="text-white font-bold">{chainId === 84532 ? 'BASE' : 'SEPOLIA'}</span>
+                System: <span className="text-white font-bold">ONLINE (SEPOLIA)</span>
             </span>
         </div>
- 
-        {/* TERMINAL DE VÉRITÉ (Visible partout pour éduquer) */}
+
+        {/* 1. LA MENACE (ROUGE) */}
         <div className="animate-fade-in">
            <Prophecy />
         </div>
 
-        {/* LE CERVEAU (NOUVEAU) */}
-        <div className="animate-fade-in delay-200">
+        {/* 2. LE CERVEAU (IA) */}
+        <div className="animate-fade-in delay-100">
             <MoralAI />
         </div>
 
-        {/* L'ÂME DE LA TRINITÉ (Visible sur Sepolia) */}
-        {chainId === 11155111 && (
-            <div className="animate-fade-in-up">
-                <SoulCard />
-                <Altar />
-            </div>
-        )}
-
-        {/* STATUT */}
-        <div>
-          <h3 className="text-zinc-500 text-xs uppercase tracking-[0.2em] mb-2">Statut Identifié</h3>
-          <div className="text-2xl md:text-3xl font-black text-green-400 drop-shadow-[0_0_15px_rgba(74,222,128,0.5)] flex items-center justify-center gap-2 flex-wrap">
-             <span>🛡️</span> 
-             <span>NOBLE FONDATEUR</span>
-          </div>
+        {/* 3. L'IDENTITÉ (VIOLET) */}
+        <div className="animate-fade-in delay-200">
+            <SoulCard />
         </div>
 
-        {/* TRÉSORERIE */}
-        <div className="py-4 border-y border-white/5">
-           <h3 className="text-zinc-500 text-xs uppercase tracking-[0.2em] mb-1">Trésorerie Personnelle</h3>
-           <div className="text-4xl md:text-6xl font-thin text-white font-mono tracking-tighter break-all">
-             {freeBalance.toLocaleString('fr-FR')}
-             <span className="text-lg md:text-2xl text-purple-500 ml-2 font-bold">GMNZ</span>
-           </div>
-           
-           <div className="mt-2 text-xs text-zinc-600 font-mono bg-black/50 inline-block px-3 py-1 rounded border border-white/5 truncate max-w-[200px] md:max-w-full">
-             {address}
-           </div>
+        {/* 4. LA FORGE (JAUNE) */}
+        <div className="animate-fade-in delay-300">
+            <Altar />
         </div>
 
-        {/* VESTING */}
-        <CryoVault />
+        {/* 5. LE TRANSFERT (VERT) */}
+        <div className="animate-fade-in delay-400">
+            <Railgun />
+        </div>
 
-        {/* COMPOSANT DE TRANSFERT */}
-        <Railgun />
-
-        {/* PROTOCOLE D'EXPANSION (Prestige) */}
-        <AccessControl />
+        {/* 6. LA RÉSERVE (BLEU) */}
+        <div className="animate-fade-in delay-500">
+            <CryoVault />
+        </div>
+        
+        {/* 7. LA COLONIE (OR) */}
+        <div className="animate-fade-in delay-700">
+            <AccessControl />
+        </div>
 
       </div>
     </div>
