@@ -9,6 +9,7 @@ import { Altar } from './Altar';
 import { Prophecy } from './Prophecy';
 import { CryoVault } from './CryoVault';
 import { Railgun } from './Railgun';
+import { MoralAI } from './MoralAI';
 
 export function Dashboard() {
   const { address, isConnected } = useAccount();
@@ -51,6 +52,11 @@ export function Dashboard() {
         {/* TERMINAL DE VÉRITÉ (Visible partout pour éduquer) */}
         <div className="animate-fade-in">
            <Prophecy />
+        </div>
+
+        {/* LE CERVEAU (NOUVEAU) */}
+        <div className="animate-fade-in delay-200">
+            <MoralAI />
         </div>
 
         {/* L'ÂME DE LA TRINITÉ (Visible sur Sepolia) */}
