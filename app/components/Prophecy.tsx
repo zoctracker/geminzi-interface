@@ -50,9 +50,9 @@ export function Prophecy() {
                 {timeLeft.days}D <span className="text-lg text-green-800">:{timeLeft.hours}:{timeLeft.minutes}:{timeLeft.seconds}</span>
             </div>
             <p className="text-[10px] text-green-700 leading-relaxed">
-                > TARGET: 2029 (IBM/GOOGLE QUANTUM SUPREMACY)<br/>
-                > STATUS: ELLIPTIC CURVE VULNERABLE<br/>
-                > PROTOCOL: <span className="text-green-400 font-bold underline">MIGRATE TO SOULBOUND</span>
+                &gt; TARGET: 2029 (IBM/GOOGLE QUANTUM SUPREMACY)<br/>
+                &gt; STATUS: ELLIPTIC CURVE VULNERABLE<br/>
+                &gt; PROTOCOL: <span className="text-green-400 font-bold underline">MIGRATE TO SOULBOUND</span>
             </p>
         </div>
 
