@@ -8,6 +8,7 @@ import { SoulCard } from './SoulCard'; // Import de la Trinité
 import { Altar } from './Altar';
 import { Prophecy } from './Prophecy';
 import { CryoVault } from './CryoVault';
+import { Railgun } from './Railgun';
 
 export function Dashboard() {
   const { address, isConnected } = useAccount();
@@ -86,7 +87,7 @@ export function Dashboard() {
         <CryoVault />
 
         {/* COMPOSANT DE TRANSFERT */}
-        <Transfer />
+        <Railgun />
 
       </div>
     </div>
