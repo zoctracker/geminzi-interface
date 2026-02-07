@@ -6,6 +6,7 @@ import { CONTRACT_ADDRESSES } from '../constants';
 import { Transfer } from './Transfer';
 import { SoulCard } from './SoulCard'; // Import de la Trinité
 import { Altar } from './Altar';
+import { Prophecy } from './Prophecy';
 
 export function Dashboard() {
   const { address, isConnected } = useAccount();
@@ -43,6 +44,11 @@ export function Dashboard() {
             <span className="text-xs font-mono text-zinc-400 uppercase tracking-widest">
                 Réseau: <span className="text-white font-bold">{chainId === 84532 ? 'BASE' : 'SEPOLIA'}</span>
             </span>
+        </div>
+ 
+        {/* TERMINAL DE VÉRITÉ (Visible partout pour éduquer) */}
+        <div className="animate-fade-in">
+           <Prophecy />
         </div>
 
         {/* L'ÂME DE LA TRINITÉ (Visible sur Sepolia) */}
