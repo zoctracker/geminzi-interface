@@ -7,6 +7,7 @@ import { Transfer } from './Transfer';
 import { SoulCard } from './SoulCard'; // Import de la Trinité
 import { Altar } from './Altar';
 import { Prophecy } from './Prophecy';
+import { CryoVault } from './CryoVault';
 
 export function Dashboard() {
   const { address, isConnected } = useAccount();
@@ -82,17 +83,7 @@ export function Dashboard() {
         </div>
 
         {/* VESTING */}
-        <div className="bg-yellow-500/5 border border-yellow-500/20 rounded-lg p-4 md:p-6">
-            <div className="flex justify-center mb-2 text-2xl">🔒</div>
-            <h4 className="text-yellow-600 text-xs font-bold uppercase tracking-widest mb-1">The Vault (Vesting)</h4>
-            <p className="text-xs text-yellow-600/60 mb-3">Fonds sécurisés par Smart Contract</p>
-            <div className="text-2xl md:text-3xl font-mono text-yellow-500">
-                {vestingAmount.toLocaleString('fr-FR')} <span className="text-sm">GMNZ</span>
-            </div>
-            <div className="mt-4 inline-block px-3 py-1 border border-white/10 rounded text-[10px] text-zinc-500 uppercase">
-                Libération progressive sur 24 mois
-            </div>
-        </div>
+        <CryoVault />
 
         {/* COMPOSANT DE TRANSFERT */}
         <Transfer />
