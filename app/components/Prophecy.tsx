@@ -5,7 +5,6 @@ import { useState, useEffect } from 'react';
 export function Prophecy() {
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
-  // Compte à rebours : Target 1er Janvier 2029 (Q-Day Estimation)
   useEffect(() => {
     const targetDate = new Date('2029-01-01T00:00:00').getTime();
 
@@ -27,7 +26,7 @@ export function Prophecy() {
   return (
     <div className="w-full mt-8 mb-8 font-mono border border-green-900/50 bg-black rounded-xl overflow-hidden shadow-[0_0_20px_rgba(0,255,0,0.05)]">
       
-      {/* HEADER DU TERMINAL */}
+      {/* HEADER */}
       <div className="bg-green-900/10 border-b border-green-900/30 p-2 flex justify-between items-center">
         <div className="flex gap-2">
             <div className="w-3 h-3 rounded-full bg-red-500 animate-pulse"></div>
@@ -49,27 +48,25 @@ export function Prophecy() {
             <div className="text-4xl md:text-5xl font-black text-green-500/90 tracking-tighter tabular-nums">
                 {timeLeft.days}D <span className="text-lg text-green-800">:{timeLeft.hours}:{timeLeft.minutes}:{timeLeft.seconds}</span>
             </div>
+            {/* C'EST ICI QUE JE SÉCURISE LES CARACTÈRES AVEC {'>'} */}
             <p className="text-[10px] text-green-700 leading-relaxed">
-                &gt; TARGET: 2029 (IBM/GOOGLE QUANTUM SUPREMACY)<br/>
-                &gt; STATUS: ELLIPTIC CURVE VULNERABLE<br/>
-                &gt; PROTOCOL: <span className="text-green-400 font-bold underline">MIGRATE TO SOULBOUND</span>
+                {'>'} TARGET: 2029 (IBM/GOOGLE QUANTUM SUPREMACY)<br/>
+                {'>'} STATUS: ELLIPTIC CURVE VULNERABLE<br/>
+                {'>'} PROTOCOL: <span className="text-green-400 font-bold underline">MIGRATE TO SOULBOUND</span>
             </p>
         </div>
 
-        {/* PANEL 2: SIGNAL RECTIFIER (Based on your schemas) */}
+        {/* PANEL 2: SIGNAL RECTIFIER */}
         <div className="relative h-32 border border-green-900/30 bg-green-900/5 rounded p-2 flex items-center justify-center overflow-hidden">
-            {/* Grille d'oscilloscope */}
             <div className="absolute inset-0 opacity-10" 
                  style={{backgroundImage: 'linear-gradient(0deg, transparent 24%, #00ff00 25%, #00ff00 26%, transparent 27%, transparent 74%, #00ff00 75%, #00ff00 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, #00ff00 25%, #00ff00 26%, transparent 27%, transparent 74%, #00ff00 75%, #00ff00 76%, transparent 77%, transparent)', backgroundSize: '30px 30px'}}>
             </div>
 
-            {/* Signal AC (Chaos L2) */}
             <svg className="absolute w-full h-full opacity-30" preserveAspectRatio="none">
                 <path d="M0,50 Q25,0 50,50 T100,50 T150,50 T200,50" fill="none" stroke="red" strokeWidth="2" className="animate-pulse" />
                 <path d="M0,50 C20,10 40,90 60,50 S100,10 120,50 S160,90 180,50" fill="none" stroke="red" strokeWidth="1" />
             </svg>
 
-            {/* Signal DC (Rectified Geminzi) */}
             <div className="z-10 bg-black/80 px-4 py-2 border border-green-500/50 text-green-400 text-xs font-bold shadow-[0_0_10px_rgba(0,255,0,0.2)]">
                 MORAL RECTIFIER ACTIVE
             </div>
@@ -81,10 +78,10 @@ export function Prophecy() {
 
       </div>
 
-      {/* FOOTER: MESSAGE */}
+      {/* FOOTER */}
       <div className="p-4 bg-green-900/5 border-t border-green-900/30 text-center">
         <p className="text-[10px] md:text-xs text-green-600 uppercase tracking-widest">
-            "Chaos is raw material. Order is the product."
+            &quot;Chaos is raw material. Order is the product.&quot;
         </p>
       </div>
     </div>
