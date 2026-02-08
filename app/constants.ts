@@ -1,26 +1,55 @@
-// Imports des ABIs (Manuels d'instruction)
-// Assure-toi que les fichiers JSON existent bien dans src/abis/
-import GeminziABI from '../src/abis/GeminziOFT.json';
-import GeminziSoulABI from '../src/abis/GeminziSoul.json';
+// ADRESSE DU CONTRAT DÉPLOYÉ
+export const SOUL_ADDRESS = '0x15bAafA6f754F9Fddf0133B525C643da18272230';
 
-export const CONTRACT_ABI = GeminziABI.abi;
-export const SOUL_ABI = GeminziSoulABI.abi;
+// ADRESSE DU DOMINATEUR (TOI)
+// C'est l'adresse qui servira de "Parrain par défaut" pour tes premiers tests.
+// Remplace ceci par ton adresse de wallet (0x53acc...) si tu veux être le parrain.
+export const DOMINATOR_ADDRESS = '0x53acc98eD6fb58412c981F504dC8E8239b6559bf'; 
 
-// 1. GEMINZI TOKEN (L'Argent)
-export const CONTRACT_ADDRESSES: Record<number, `0x${string}`> = {
-  11155111: "0x5f2eA208e85d00D3322043bf558eE1035883C4d6", // Sepolia
-  84532: "0xb146A8CAe83bF88007863A34b9537A855c918CC0"    // Base
-};
+export const SOUL_ABI = [
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_mentorAddress", "type": "address" },
+      { "internalType": "uint8", "name": "_archetype", "type": "uint8" }
+    ],
+    "name": "manifestSoul",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "sacrifice",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "_user", "type": "address" }],
+    "name": "getMySoul",
+    "outputs": [
+      { "internalType": "uint256", "name": "", "type": "uint256" },
+      { "internalType": "uint256", "name": "", "type": "uint256" },
+      { "internalType": "uint8", "name": "", "type": "uint8" },
+      { "internalType": "uint256", "name": "", "type": "uint256" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "internalType": "address", "name": "owner", "type": "address" },
+      { "indexed": false, "internalType": "uint256", "name": "id", "type": "uint256" },
+      { "indexed": false, "internalType": "uint8", "name": "archetype", "type": "uint8" },
+      { "indexed": false, "internalType": "address", "name": "mentor", "type": "address" }
+    ],
+    "name": "SoulBorn",
+    "type": "event"
+  }
+] as const;
 
-// 2. GEMINZI SOUL (L'Identité)
-// C'est cette ligne qui manquait ou qui était mal exportée !
-export const SOUL_ADDRESS: `0x${string}` = "0x9fAc3d42E3271F0a1b10e6a0843d6E12c570a4c2";
-
-// 3. LAYERZERO (Le Pont)
-export const LZ_EIDS: Record<number, number> = {
-  11155111: 40245,
-  84532: 40161
-};
-
-// 4. FALLBACK (Sécurité pour les vieux composants)
-export const CONTRACT_ADDRESS = CONTRACT_ADDRESSES[11155111];
+// Pour la compatibilité avec le reste du code (si utilisé ailleurs)
+export const CONTRACT_ADDRESS = SOUL_ADDRESS;
+export const CONTRACT_ABI = SOUL_ABI;
+export const CONTRACT_ADDRESSES = { 11155111: SOUL_ADDRESS };
