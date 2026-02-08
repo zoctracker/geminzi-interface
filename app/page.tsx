@@ -1,36 +1,40 @@
 'use client';
 
-import { WagmiConfig, createConfig, http } from 'wagmi';
+import { useState, useEffect } from 'react';
+import { WagmiProvider, createConfig, http } from 'wagmi';
 import { sepolia } from 'wagmi/chains';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { RainbowKitProvider, getDefaultConfig, darkTheme } from '@rainbow-me/rainbowkit';
+import { RainbowKitProvider, darkTheme, ConnectButton } from '@rainbow-me/rainbowkit';
 import '@rainbow-me/rainbowkit/styles.css';
 import { useAccount, useReadContract } from 'wagmi';
 import { SOUL_ADDRESS, SOUL_ABI } from './constants';
 
 // COMPONENTS
 import { Dashboard } from './components/Dashboard';
-import { TheGate } from './components/TheGate'; // Nouveau composant
-import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { TheGate } from './components/TheGate';
 
-// CONFIG (Identique à avant)
-const config = getDefaultConfig({
-  appName: 'Geminzi Interface',
-  projectId: 'YOUR_PROJECT_ID',
+// CONFIGURATION WAGMI
+const config = createConfig({
   chains: [sepolia],
   transports: {
     [sepolia.id]: http(),
   },
-  ssr: true,
+  ssr: true, // Server Side Rendering activé pour éviter les mismatches
 });
 
 const queryClient = new QueryClient();
 
-// COMPOSANT DE GESTION D'ACCÈS
+// COMPOSANT LOGIQUE (INTERNE)
 function AccessManager() {
-  const { address, isConnected } = useAccount();
+  const { isConnected, address } = useAccount();
+  const [isMounted, setIsMounted] = useState(false);
 
-  // On lit la vitalité sur la blockchain
+  // HYDRATION FIX: On attend que le composant soit monté côté client
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  // Lecture de la Vitalité
   const { data: soulData, isLoading } = useReadContract({
     address: SOUL_ADDRESS,
     abi: SOUL_ABI,
@@ -40,7 +44,10 @@ function AccessManager() {
 
   const vitality = soulData ? Number(soulData[0]) : 0;
 
-  // 1. SI PAS CONNECTÉ : Écran d'accueil simple
+  // 0. SI PAS ENCORE MONTÉ (Page blanche rapide pour éviter le crash)
+  if (!isMounted) return null;
+
+  // 1. SI PAS CONNECTÉ
   if (!isConnected) {
     return (
       <div className="min-h-screen bg-black flex flex-col items-center justify-center font-mono p-4">
@@ -51,7 +58,21 @@ function AccessManager() {
         <h1 className="text-3xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-zinc-500 tracking-tighter mb-8">
             GEMINZI
         </h1>
-        <ConnectButton />
+        
+        {/* BOUTON RAINBOW KIT */}
+        <ConnectButton.Custom>
+          {({ openConnectModal, mounted }) => {
+            return (
+              <button 
+                onClick={openConnectModal}
+                className="bg-white text-black px-6 py-3 rounded font-bold uppercase tracking-widest hover:scale-105 transition-transform"
+              >
+                {mounted ? 'Initialize Link' : 'Loading...'}
+              </button>
+            );
+          }}
+        </ConnectButton.Custom>
+
         <p className="mt-8 text-[10px] text-zinc-600 uppercase tracking-widest">
             Protocol v1.0 // Sepolia Network
         </p>
@@ -59,30 +80,28 @@ function AccessManager() {
     );
   }
 
-  // 2. SI CONNECTÉ MAIS PAS D'ÂME (VITALITÉ = 0) -> THE GATE
-  // Note: Pour tester le Dashboard si tu as 0 vitalité, tu peux commenter cette condition temporairement.
+  // 2. SI CONNECTÉ ET ÂME VIERGE (VITALITÉ = 0) -> THE GATE
+  // (NOTE: Si tu veux tester le Dashboard même avec 0 vitalité, commente les 3 lignes ci-dessous)
   if (vitality === 0 && !isLoading) {
      return <TheGate />;
   }
 
-  // 3. SI CONNECTÉ ET ÂME PRÉSENTE (VITALITÉ > 0) -> DASHBOARD
+  // 3. SI MEMBRE CONFIRMÉ -> DASHBOARD
   return <Dashboard />;
 }
 
 export default function Page() {
   return (
-    <WagmiConfig config={config}>
+    <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
         <RainbowKitProvider theme={darkTheme({
           accentColor: '#7b3fe4',
           accentColorForeground: 'white',
           borderRadius: 'small',
         })}>
-          
           <AccessManager />
-          
         </RainbowKitProvider>
       </QueryClientProvider>
-    </WagmiConfig>
+    </WagmiProvider>
   );
 }
