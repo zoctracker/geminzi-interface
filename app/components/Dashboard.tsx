@@ -6,10 +6,10 @@ import { CONTRACT_ADDRESSES } from '../constants';
 import { SoulCard } from './SoulCard';
 import { Prophecy } from './Prophecy';
 import { MoralAI } from './MoralAI';
-import { Altar } from './Altar';       // La Forge
-import { CryoVault } from './CryoVault'; // Le Vesting
-import { Railgun } from './Railgun';     // Le Transfert
-import { AccessControl } from './AccessControl'; // La Colonie
+import { Altar } from './Altar';
+import { CryoVault } from './CryoVault';
+import { Railgun } from './Railgun';
+import { AccessControl } from './AccessControl';
 
 export function Dashboard() {
   const { address, isConnected } = useAccount();
@@ -27,7 +27,7 @@ export function Dashboard() {
   if (!isConnected) {
     return (
       <div className="text-center text-zinc-500 animate-pulse mt-10 px-4 font-mono text-sm">
-        > WAITING FOR NEURAL LINK... (Connect Wallet)
+        &gt; WAITING FOR NEURAL LINK... (Connect Wallet)
       </div>
     );
   }
@@ -51,7 +51,7 @@ export function Dashboard() {
   // Calcul du Vesting
   const rawBalance = tokenBalance ? Number(formatEther(tokenBalance.value)) : 0;
   const vestingAmount = 20202020;
-  const freeBalance = Math.round(rawBalance - vestingAmount); // Ajuster selon ta logique réelle
+  const freeBalance = Math.round(rawBalance - vestingAmount); 
 
   return (
     <div className="w-full max-w-2xl mt-8 md:mt-12 p-1 rounded-2xl bg-gradient-to-r from-purple-500/20 to-indigo-500/20 backdrop-blur-xl border border-white/10 mx-auto">
@@ -95,7 +95,7 @@ export function Dashboard() {
             <CryoVault />
         </div>
         
-        {/* 7. LA COLONIE (OR) */}
+        {/* 7. LA COLONIE (OR - TRINITÉ) */}
         <div className="animate-fade-in delay-700">
             <AccessControl />
         </div>
