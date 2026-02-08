@@ -10,10 +10,13 @@ export function TheGate() {
   const [code, setCode] = useState('');
   const [error, setError] = useState('');
 
-  // VALIDATION DU CODE (Simulation)
+// VALIDATION DU CODE
   const handleCodeSubmit = () => {
-    // On accepte n'importe quel code qui commence par TRINITY-
-    if (code.toUpperCase().startsWith('TRINITY-') && code.length > 10) {
+    // Nettoyage de l'entrée (majuscules forcées, espaces retirés)
+    const cleanCode = code.trim().toUpperCase();
+    
+    // Code Maître pour tes tests : "TRINITY" suffit maintenant
+    if (cleanCode.startsWith('TRINITY')) {
         setStep('CHOICE');
         setError('');
     } else {

@@ -13,28 +13,25 @@ import { SOUL_ADDRESS, SOUL_ABI } from './constants';
 import { Dashboard } from './components/Dashboard';
 import { TheGate } from './components/TheGate';
 
-// CONFIGURATION WAGMI
 const config = createConfig({
   chains: [sepolia],
   transports: {
     [sepolia.id]: http(),
   },
-  ssr: true, // Server Side Rendering activé pour éviter les mismatches
+  ssr: true,
 });
 
 const queryClient = new QueryClient();
 
-// COMPOSANT LOGIQUE (INTERNE)
 function AccessManager() {
   const { isConnected, address } = useAccount();
   const [isMounted, setIsMounted] = useState(false);
 
-  // HYDRATION FIX: On attend que le composant soit monté côté client
+  // ANTI-CRASH : On force l'attente du montage client
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
-  // Lecture de la Vitalité
   const { data: soulData, isLoading } = useReadContract({
     address: SOUL_ADDRESS,
     abi: SOUL_ABI,
@@ -44,10 +41,9 @@ function AccessManager() {
 
   const vitality = soulData ? Number(soulData[0]) : 0;
 
-  // 0. SI PAS ENCORE MONTÉ (Page blanche rapide pour éviter le crash)
+  // Si le navigateur n'est pas prêt, on renvoie une div vide (évite le crash)
   if (!isMounted) return null;
 
-  // 1. SI PAS CONNECTÉ
   if (!isConnected) {
     return (
       <div className="min-h-screen bg-black flex flex-col items-center justify-center font-mono p-4">
@@ -58,21 +54,7 @@ function AccessManager() {
         <h1 className="text-3xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-zinc-500 tracking-tighter mb-8">
             GEMINZI
         </h1>
-        
-        {/* BOUTON RAINBOW KIT */}
-        <ConnectButton.Custom>
-          {({ openConnectModal, mounted }) => {
-            return (
-              <button 
-                onClick={openConnectModal}
-                className="bg-white text-black px-6 py-3 rounded font-bold uppercase tracking-widest hover:scale-105 transition-transform"
-              >
-                {mounted ? 'Initialize Link' : 'Loading...'}
-              </button>
-            );
-          }}
-        </ConnectButton.Custom>
-
+        <ConnectButton />
         <p className="mt-8 text-[10px] text-zinc-600 uppercase tracking-widest">
             Protocol v1.0 // Sepolia Network
         </p>
@@ -80,13 +62,13 @@ function AccessManager() {
     );
   }
 
-  // 2. SI CONNECTÉ ET ÂME VIERGE (VITALITÉ = 0) -> THE GATE
-  // (NOTE: Si tu veux tester le Dashboard même avec 0 vitalité, commente les 3 lignes ci-dessous)
+  // LOGIQUE D'ACCÈS
+  // Si Vitalité = 0 -> THE GATE (Le Choix)
   if (vitality === 0 && !isLoading) {
      return <TheGate />;
   }
 
-  // 3. SI MEMBRE CONFIRMÉ -> DASHBOARD
+  // Si Vitalité > 0 -> DASHBOARD (Le Maître)
   return <Dashboard />;
 }
 
@@ -94,11 +76,7 @@ export default function Page() {
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
-        <RainbowKitProvider theme={darkTheme({
-          accentColor: '#7b3fe4',
-          accentColorForeground: 'white',
-          borderRadius: 'small',
-        })}>
+        <RainbowKitProvider theme={darkTheme({ accentColor: '#7b3fe4' })}>
           <AccessManager />
         </RainbowKitProvider>
       </QueryClientProvider>
