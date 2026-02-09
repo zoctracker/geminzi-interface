@@ -14,30 +14,15 @@ export function ProtocolCore() {
   const chainId = useChainId();
   const [isReady, setIsReady] = useState(false);
 
-   // AJOUTE CETTE SÉCURITÉ DE CONVERSION
-  let vitality = 0;
-  try {
-      if (soulData && Array.isArray(soulData)) {
-          // On force la conversion en Number ou String, car React DÉTESTE les BigInt
-          vitality = Number(soulData[0]); 
-      }
-  } catch (err) {
-      console.error("Parsing Error:", err);
-  }
-
   // 1. DÉLAI DE SÉCURITÉ (Anti-Flash)
   useEffect(() => {
-    // On attend que Wagmi soit stabilisé
     if (status !== 'reconnecting' && status !== 'connecting') {
-        // Petit délai artificiel pour laisser le temps au DOM de respirer
         const timer = setTimeout(() => setIsReady(true), 500);
         return () => clearTimeout(timer);
     }
   }, [status]);
 
-  // 2. SÉCURITÉ RÉSEAU AVANT LECTURE
-  // Si on n'est pas sur Sepolia (11155111), on ne tente même pas de lire le contrat
-  // (Sinon ça crash car l'adresse n'existe pas sur les autres réseaux)
+  // 2. SÉCURITÉ RÉSEAU
   const isSepolia = chainId === 11155111;
 
   // 3. LECTURE SÉCURISÉE
@@ -52,7 +37,6 @@ export function ProtocolCore() {
     functionName: 'getMySoul',
     args: address ? [address] : undefined,
     query: {
-        // On ne tire que si : Connecté + Prêt + Bon Réseau
         enabled: !!address && isConnected && isReady && isSepolia, 
         retry: 1, 
     }
@@ -60,7 +44,7 @@ export function ProtocolCore() {
 
   // --- RENDU ---
 
-  // A. ÉCRAN DE CHARGEMENT INITIAL (Le temps que Wagmi se réveille)
+  // A. ÉCRAN DE CHARGEMENT INITIAL
   if (!isReady) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center font-mono">
@@ -90,30 +74,30 @@ export function ProtocolCore() {
     );
   }
 
-  // C. SI MAUVAIS RÉSEAU (Crucial pour éviter le crash)
+  // C. SI MAUVAIS RÉSEAU
   if (!isSepolia) {
     return (
       <div className="min-h-screen bg-black flex flex-col items-center justify-center text-center p-6 font-mono">
         <h2 className="text-red-500 font-bold mb-4">⚠️ WRONG NETWORK DETECTED</h2>
         <p className="text-zinc-400 text-sm mb-6">
-            You are connected to Chain ID <span className="text-white">{chainId}</span>.
-            <br/>The Protocol resides on <span className="text-purple-400">Sepolia (11155111)</span>.
+            You are currently on Chain ID <span className="text-white">{chainId}</span>.
+            <br/>Target Protocol requires: <span className="text-purple-400">Sepolia (11155111)</span>.
         </p>
         <ConnectButton />
       </div>
     );
   }
 
-  // D. SI ERREUR DE LECTURE DU CONTRAT (Kintsugi Mode : On montre la cicatrice)
+  // D. SI ERREUR DE LECTURE DU CONTRAT
   if (isContractError) {
       console.error("Contract Error:", contractErrorDetails);
       return (
           <div className="min-h-screen bg-black flex flex-col items-center justify-center text-center p-6 font-mono border border-red-900">
               <h2 className="text-orange-500 font-bold mb-2">⚡ DATA FRACTURE</h2>
               <p className="text-zinc-500 text-xs max-w-md mb-4">
-                  Unable to read Soul Signature. This usually means the RPC is busy or the contract address is wrong.
+                  Unable to read Soul Signature from Blockchain.
               </p>
-              <div className="bg-zinc-900 p-4 rounded text-left text-[10px] text-red-400 overflow-auto max-w-lg mb-4">
+              <div className="bg-zinc-900 p-4 rounded text-left text-[10px] text-red-400 overflow-auto max-w-lg mb-4 h-32">
                   {contractErrorDetails?.message || "Unknown Error"}
               </div>
               <button onClick={() => window.location.reload()} className="text-white underline text-xs">
@@ -134,17 +118,19 @@ export function ProtocolCore() {
     );
   }
 
-  // F. SUCCÈS - ANALYSE DES DONNÉES
-  // Conversion sécurisée (BigInt -> Number)
+  // F. SUCCÈS - ANALYSE SÉCURISÉE DES DONNÉES (UNIQUE DÉFINITION)
   let vitality = 0;
+  
   try {
       if (soulData && Array.isArray(soulData)) {
-          // Conversion explicite pour éviter le crash BigInt
+          // On convertit le BigInt en Number pour l'affichage
+          // Note: Si le nombre est gigantesque, cela peut manquer de précision, 
+          // mais pour la Vitalité (0-1000), c'est parfait.
           vitality = Number(soulData[0]); 
       }
   } catch (err) {
-      console.error("Parsing Error:", err);
-      // On continue avec vitalité 0 par sécurité
+      console.error("Parsing Error (BigInt):", err);
+      // On reste à 0 en cas d'erreur
   }
 
   // G. ROUTAGE FINAL
