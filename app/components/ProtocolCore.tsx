@@ -14,6 +14,17 @@ export function ProtocolCore() {
   const chainId = useChainId();
   const [isReady, setIsReady] = useState(false);
 
+   // AJOUTE CETTE SÉCURITÉ DE CONVERSION
+  let vitality = 0;
+  try {
+      if (soulData && Array.isArray(soulData)) {
+          // On force la conversion en Number ou String, car React DÉTESTE les BigInt
+          vitality = Number(soulData[0]); 
+      }
+  } catch (err) {
+      console.error("Parsing Error:", err);
+  }
+
   // 1. DÉLAI DE SÉCURITÉ (Anti-Flash)
   useEffect(() => {
     // On attend que Wagmi soit stabilisé
