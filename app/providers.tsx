@@ -6,6 +6,8 @@ import { WagmiProvider } from 'wagmi';
 import { RainbowKitProvider, darkTheme } from '@rainbow-me/rainbowkit';
 import { config } from './config';
 
+// NOTE : L'import CSS a été déplacé dans layout.tsx pour éviter le FOUC
+
 const queryClient = new QueryClient();
 
 export function Providers({ children }: { children: React.ReactNode }) {
