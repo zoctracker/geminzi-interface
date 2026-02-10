@@ -1,126 +1,148 @@
 'use client';
 
 import { useState } from 'react';
-import { useAccount } from 'wagmi';
+import { useAccount, useReadContract } from 'wagmi';
+import { SOUL_ADDRESS, SOUL_ABI } from '../constants';
 
 export function AccessControl() {
   const { address } = useAccount();
-  const [code, setCode] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
-  // LA LOI DU 2 (TRINITÉ)
-  const recruitCount = 0; // Pour l'instant 0
-  const maxRecruits = 2;  // Vent & Nuage
+  // LECTURE DU DISCIPLE #1 (Index 0)
+  const { data: disciple1, isError: noDisciple1 } = useReadContract({
+    address: SOUL_ADDRESS,
+    abi: SOUL_ABI,
+    functionName: 'disciples',
+    args: address ? [address, 0n] : undefined, // On demande l'index 0
+  });
 
-  const generateCode = () => {
-    if (!address) return;
-    const uniquePart = address.slice(2, 6) + address.slice(-4);
-    const newCode = `TRINITY-${uniquePart.toUpperCase()}`; // Nouveau format de code
-    setCode(newCode);
-    setCopied(false);
+  // LECTURE DU DISCIPLE #2 (Index 1)
+  const { data: disciple2, isError: noDisciple2 } = useReadContract({
+    address: SOUL_ADDRESS,
+    abi: SOUL_ABI,
+    functionName: 'disciples',
+    args: address ? [address, 1n] : undefined, // On demande l'index 1
+  });
+
+  const generateInvite = () => {
+    // Dans la V1, le code est simplement "TRINITY-" suivi de ton adresse (ou un code fixe pour la demo)
+    // Pour simplifier le test, on copie TRINITY-ALPHA
+    navigator.clipboard.writeText("TRINITY-ALPHA");
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   };
 
-  const copyToClipboard = () => {
-    if (code) {
-        navigator.clipboard.writeText(code);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-    }
+  // Helper pour formater l'adresse (0x1234...5678)
+  const formatAddress = (addr: string) => {
+      return `${addr.substring(0, 6)}...${addr.substring(addr.length - 4)}`;
   };
 
   return (
-    <div className="w-full mt-12 mb-8 pb-24 font-mono">
-      
-      {/* CADRE TRINITAIRE (AMBER/GOLD) */}
-      <div className="relative bg-gradient-to-b from-neutral-900 to-black border border-amber-500/30 rounded-xl p-1 shadow-[0_0_30px_rgba(245,158,11,0.05)]">
-        
-        {/* HEADER */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-black px-4 py-1 border border-amber-500/50 rounded-full z-10">
-            <span className="text-[10px] text-amber-500 font-bold tracking-widest uppercase flex items-center gap-2">
-                🔺 Trinity Protocol
-            </span>
+    <div className="w-full border border-orange-500/20 rounded-xl bg-orange-950/5 p-6 relative overflow-hidden group">
+      {/* Background Decor */}
+      <div className="absolute top-0 right-0 w-32 h-32 bg-orange-500/5 rounded-full blur-3xl group-hover:bg-orange-500/10 transition-colors"></div>
+
+      <div className="flex items-center gap-3 mb-6">
+        <div className="text-orange-500 text-sm tracking-widest uppercase font-bold border border-orange-500/30 px-3 py-1 rounded-full">
+           ▲ Trinity Protocol
         </div>
+      </div>
 
-        <div className="p-6 pt-10 text-center relative z-0">
+      <div className="relative text-center py-8">
+        <h3 className="text-zinc-500 text-[10px] tracking-[0.3em] uppercase mb-8">
+            The Dominator's Lineage
+        </h3>
+
+        {/* PYRAMID VISUALIZATION */}
+        <div className="relative w-64 h-40 mx-auto mb-8">
+            {/* Lignes de connexion */}
+            <div className="absolute top-8 left-1/2 -translate-x-1/2 w-px h-16 bg-gradient-to-b from-orange-500 to-transparent"></div>
+            <div className="absolute top-24 left-10 right-10 h-px bg-gradient-to-r from-transparent via-orange-900 to-transparent border-t border-dashed border-orange-900"></div>
             
-            <h3 className="text-zinc-500 text-[10px] uppercase tracking-[0.3em] mb-8">
-                The Dominator's Lineage
-            </h3>
-
-            {/* DIAGRAMME DE LA TRINITÉ */}
-            <div className="relative h-48 mb-8 flex flex-col items-center justify-center">
-                
-                {/* Lignes de connexion (Triangle) */}
-                <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-30">
-                    {/* Sommet vers Gauche */}
-                    <line x1="50%" y1="20%" x2="25%" y2="80%" stroke="#d97706" strokeWidth="1" />
-                    {/* Sommet vers Droite */}
-                    <line x1="50%" y1="20%" x2="75%" y2="80%" stroke="#d97706" strokeWidth="1" />
-                    {/* Base */}
-                    <line x1="25%" y1="80%" x2="75%" y2="80%" stroke="#d97706" strokeWidth="1" strokeDasharray="4 4" />
-                </svg>
-
-                {/* SOMMET : LE DOMINATEUR (TOI) */}
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 flex flex-col items-center">
-                    <div className="w-12 h-12 rounded-full bg-amber-500/20 border border-amber-500 flex items-center justify-center shadow-[0_0_15px_rgba(245,158,11,0.5)] z-10">
-                        <span className="text-lg">👑</span>
-                    </div>
-                    <span className="text-[9px] text-amber-500 font-bold mt-2 tracking-widest bg-black px-2">YOU</span>
+            {/* YOU (Sommet) */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 flex flex-col items-center z-10">
+                <div className="w-12 h-12 rounded-full bg-black border-2 border-orange-500 shadow-[0_0_15px_rgba(249,115,22,0.4)] flex items-center justify-center text-xl">
+                    👑
                 </div>
-
-                {/* BASE GAUCHE : LE VENT */}
-                <div className="absolute bottom-0 left-[15%] md:left-[25%] flex flex-col items-center">
-                    <div className={`w-10 h-10 rounded-full border border-dashed border-zinc-700 flex items-center justify-center z-10 ${recruitCount > 0 ? 'bg-amber-900/50 border-amber-500' : 'bg-black'}`}>
-                        <span className="text-xs text-zinc-600">{recruitCount > 0 ? '👤' : '?'}</span>
-                    </div>
-                    <span className="text-[8px] text-zinc-600 mt-2 tracking-widest uppercase">Wind</span>
-                </div>
-
-                {/* BASE DROITE : LE NUAGE */}
-                <div className="absolute bottom-0 right-[15%] md:right-[25%] flex flex-col items-center">
-                    <div className={`w-10 h-10 rounded-full border border-dashed border-zinc-700 flex items-center justify-center z-10 ${recruitCount > 1 ? 'bg-amber-900/50 border-amber-500' : 'bg-black'}`}>
-                         <span className="text-xs text-zinc-600">{recruitCount > 1 ? '👤' : '?'}</span>
-                    </div>
-                    <span className="text-[8px] text-zinc-600 mt-2 tracking-widest uppercase">Cloud</span>
+                <div className="mt-2 bg-black px-2 py-0.5 text-[9px] font-bold text-orange-500 uppercase tracking-widest">
+                    You
                 </div>
             </div>
 
-            {/* ACTION : RECRUTEMENT */}
-            <div className="relative z-50">
-                {!code ? (
-                    <button 
-                        onClick={generateCode}
-                        disabled={recruitCount >= maxRecruits}
-                        className="cursor-pointer group inline-flex items-center justify-center px-6 py-3 overflow-hidden font-bold text-white transition-all duration-300 bg-amber-700 rounded hover:bg-amber-600 focus:outline-none focus:ring shadow-lg active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                        <span className="absolute top-0 right-0 inline-block w-4 h-4 transition-all duration-500 ease-in-out bg-amber-900 rounded group-hover:-mr-4 group-hover:-mt-4">
-                        <span className="absolute top-0 right-0 w-5 h-5 rotate-45 translate-x-1/2 -translate-y-1/2 bg-white opacity-10"></span>
-                        </span>
-                        <span className="relative text-[10px] uppercase tracking-widest flex items-center gap-2">
-                           <span>⚔️</span> Summon Disciple
-                        </span>
-                    </button>
-                ) : (
-                    <div className="animate-fade-in-up">
-                        <div className="text-[10px] text-amber-600 uppercase mb-2">Trinity Key Forged</div>
-                        <div 
-                            onClick={copyToClipboard}
-                            className="cursor-pointer bg-amber-950/30 border border-amber-500/50 rounded-lg p-4 flex items-center justify-between hover:bg-amber-900/40 transition-colors group active:bg-amber-900/60"
-                        >
-                            <code className="text-sm md:text-base text-amber-400 font-bold tracking-wider">{code}</code>
-                            <span className="text-[10px] text-amber-600 uppercase font-bold border border-amber-600/30 px-2 py-1 rounded">
-                                {copied ? 'COPIED' : 'COPY'}
-                            </span>
+            {/* DISCIPLE 1 (Gauche) */}
+            <div className="absolute bottom-0 left-0 flex flex-col items-center">
+                {disciple1 && !noDisciple1 ? (
+                    // DISCIPLE ACTIF
+                    <>
+                        <div className="w-10 h-10 rounded-full bg-zinc-900 border border-zinc-700 flex items-center justify-center text-lg animate-pulse">
+                            🌪️
                         </div>
-                    </div>
+                        <div className="mt-2 text-[8px] text-zinc-400 font-mono bg-black/50 px-1 rounded">
+                            {formatAddress(disciple1 as string)}
+                        </div>
+                    </>
+                ) : (
+                    // EMPLACEMENT VIDE
+                    <>
+                        <div className="w-10 h-10 rounded-full bg-black border border-dashed border-zinc-700 flex items-center justify-center text-zinc-700 text-xs">
+                            ?
+                        </div>
+                        <div className="mt-2 text-[8px] text-zinc-700 font-bold uppercase">
+                            Wind
+                        </div>
+                    </>
+                )}
+            </div>
+
+            {/* DISCIPLE 2 (Droite) */}
+            <div className="absolute bottom-0 right-0 flex flex-col items-center">
+                {disciple2 && !noDisciple2 ? (
+                    // DISCIPLE ACTIF
+                    <>
+                        <div className="w-10 h-10 rounded-full bg-zinc-900 border border-zinc-700 flex items-center justify-center text-lg animate-pulse">
+                            ☁️
+                        </div>
+                        <div className="mt-2 text-[8px] text-zinc-400 font-mono bg-black/50 px-1 rounded">
+                            {formatAddress(disciple2 as string)}
+                        </div>
+                    </>
+                ) : (
+                    // EMPLACEMENT VIDE
+                    <>
+                        <div className="w-10 h-10 rounded-full bg-black border border-dashed border-zinc-700 flex items-center justify-center text-zinc-700 text-xs">
+                            ?
+                        </div>
+                        <div className="mt-2 text-[8px] text-zinc-700 font-bold uppercase">
+                            Cloud
+                        </div>
+                    </>
                 )}
             </div>
             
-            <p className="text-[9px] text-zinc-600 mt-6 italic max-w-xs mx-auto">
-                "When Wind meets Cloud, chaos breeds empire. Choose your two disciples wisely."
-            </p>
-
+            {/* Lignes diagonales (SVG pour précision) */}
+            <svg className="absolute inset-0 pointer-events-none opacity-20" width="100%" height="100%">
+                <line x1="50%" y1="20%" x2="15%" y2="80%" stroke="#f97316" strokeWidth="1" />
+                <line x1="50%" y1="20%" x2="85%" y2="80%" stroke="#f97316" strokeWidth="1" />
+            </svg>
         </div>
+
+        {/* BOUTON D'INVITATION (CORRIGÉ CSS) */}
+        <button 
+            onClick={generateInvite}
+            // AJOUT DE 'relative' et 'overflow-hidden' pour corriger le bug visuel
+            className="relative overflow-hidden bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 text-black font-black uppercase tracking-widest text-xs px-8 py-4 rounded transition-all transform hover:scale-105 active:scale-95 group shadow-[0_0_20px_rgba(234,88,12,0.3)]"
+        >
+            <span className="relative z-10 flex items-center gap-2">
+                {copied ? 'VECTOR COPIED' : '⚔️ SUMMON DISCIPLE'}
+            </span>
+            
+            {/* Le carré décoratif ne dépassera plus grâce à overflow-hidden sur le parent */}
+            <div className="absolute -right-4 -bottom-4 w-8 h-8 bg-black/20 rotate-45 group-hover:rotate-90 transition-transform"></div>
+        </button>
+        
+        <p className="mt-4 text-[9px] text-zinc-600 italic max-w-sm mx-auto">
+            "When Wind meets Cloud, chaos breeds empire. Choose your two disciples wisely."
+        </p>
       </div>
     </div>
   );

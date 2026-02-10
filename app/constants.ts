@@ -1,9 +1,4 @@
-// ADRESSE DU CONTRAT DÉPLOYÉ
 export const SOUL_ADDRESS = '0x15bAafA6f754F9Fddf0133B525C643da18272230';
-
-// ADRESSE DU DOMINATEUR (TOI)
-// C'est l'adresse qui servira de "Parrain par défaut" pour tes premiers tests.
-// Remplace ceci par ton adresse de wallet (0x53acc...) si tu veux être le parrain.
 export const DOMINATOR_ADDRESS = '0x53acc98eD6fb58412c981F504dC8E8239b6559bf'; 
 
 export const SOUL_ABI = [
@@ -36,6 +31,18 @@ export const SOUL_ABI = [
     "stateMutability": "view",
     "type": "function"
   },
+  // --- AJOUT CRUCIAL : LA FONCTION POUR LIRE LES DISCIPLES ---
+  {
+    "inputs": [
+      { "internalType": "address", "name": "", "type": "address" },
+      { "internalType": "uint256", "name": "", "type": "uint256" }
+    ],
+    "name": "disciples",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  // -----------------------------------------------------------
   {
     "anonymous": false,
     "inputs": [
@@ -49,7 +56,6 @@ export const SOUL_ABI = [
   }
 ] as const;
 
-// Pour la compatibilité avec le reste du code (si utilisé ailleurs)
 export const CONTRACT_ADDRESS = SOUL_ADDRESS;
 export const CONTRACT_ABI = SOUL_ABI;
 export const CONTRACT_ADDRESSES = { 11155111: SOUL_ADDRESS };
